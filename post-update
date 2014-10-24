@@ -29,12 +29,10 @@ SERVER="notifications.sparkleshare.org"
 PORT="443"
 
 #  Don't edit below this line
-exec > /dev/null 2>&1
+#exec > /dev/null 2>&1
 
 CHANNEL=$(git show HEAD:.sparkleshare)
 MESSAGE=$(git rev-list HEAD | head -n 1)
 
 DATA="announce ${CHANNEL} ${MESSAGE}"
-echo "${DATA}\n" | socat - TCP-CONNECT:${SERVER}:${PORT} &
-
-exit 0
+echo "${DATA}\n" | socat -d -d -v - TCP-CONNECT:${SERVER}:${PORT} > /dev/null
